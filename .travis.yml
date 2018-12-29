@@ -5,13 +5,7 @@ env:
 services:
   - docker
 
-before_install:
-  - docker build -t frontend_test -f ./frontend/Dockerfile.dev ./frontend
-
 script:
-  - docker run frontend_test npm run test -- --coverage
-
-after_success:
   - docker build -t jculvey/fib-frontend:$VERSION ./frontend
   - docker build -t jculvey/fib-api:$VERSION ./api
   - docker build -t jculvey/fib-worker:$VERSION ./worker

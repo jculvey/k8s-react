@@ -15,11 +15,15 @@ const pgClient = new Pool({
 });
 pgClient.on("error", () => console.log("Lost PG Connection..."));
 
-console.log("CREATING TABLE values");
-pgClient
-  .query(`CREATE TABLE IF NOT EXISTS values(NUMBER INT)`)
-  .catch(err => console.log(err));
-pgClient.query(`INSERT INTO values(number) VALUES(1)`);
+let dbInitialized = false;
+const readyDB = async () => {
+  if (dbInitialized) return;
+
+  console.log("INITIALIZING DB");
+  await pgClient
+    .query(`CREATE TABLE IF NOT EXISTS values(NUMBER INT)`)
+    .catch(err => console.log(err));
+};
 
 // redis client setup
 const redisClient = redis.createClient({
@@ -39,6 +43,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/values/all", async (req, res) => {
+  await readyDB();
   const values = await pgClient.query("SELECT * FROM values;");
   res.send(values.rows);
 });
@@ -53,6 +58,8 @@ app.get("/values/current", async (req, res) => {
 });
 
 app.post("/values", async (req, res) => {
+  await readyDB();
+
   if (!parseInt(req.body.index)) {
     return res.status(422).send("Index must be a number");
   }

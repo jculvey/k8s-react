@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: api-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       component: api
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: jculvey/fib-api:2018.12.2
+          image: jculvey/fib-api:2018.12.3
           ports:
             - containerPort: 5000
           env:
