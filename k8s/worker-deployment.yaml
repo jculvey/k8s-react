@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: worker
+  template:
+    metadata:
+      labels:
+        component: worker
+    spec:
+      containers:
+        - name: worker
+          image: jculvey/fib-worker:689af88f99d39396b7e47cf5ff915878f4a0dc13
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip
+            - name: REDIS_PORT
+              value: "6379"

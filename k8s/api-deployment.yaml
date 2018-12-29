@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: api
+  template:
+    metadata:
+      labels:
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: jculvey/fib-api:689af88f99d39396b7e47cf5ff915878f4a0dc13
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip
+            - name: REDIS_PORT
+              value: "6379"
+            - name: PG_HOST
+              value: postgres-cluster-ip
+            - name: PG_PORT
+              value: "5432"
+            - name: PG_USER
+              value: postgres
+            - name: PG_DB
+              value: postgres
+            - name: PG_PW
+              valueFrom:
+                secretKeyRef:
+                  name: pg-db-pw
+                  key: PG_PW
