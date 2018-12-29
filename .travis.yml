@@ -1,7 +1,7 @@
 sudo: required
 env:
   global:
-    - VERSION=2018.12.1
+    - VERSION=$(cat ./version)
 services:
   - docker
 
@@ -15,9 +15,7 @@ after_success:
   - docker build -t jculvey/fib-frontend:$VERSION ./frontend
   - docker build -t jculvey/fib-api:$VERSION ./api
   - docker build -t jculvey/fib-worker:$VERSION ./worker
-  - docker build -t jculvey/fib-nginx:$VERSION ./nginx
   - echo "$DOCKER_PW" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push jculvey/fib-frontend:$VERSION
   - docker push jculvey/fib-api:$VERSION
   - docker push jculvey/fib-worker:$VERSION
-  - docker push jculvey/fib-nginx:$VERSION

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: jculvey/fib-api:689af88f99d39396b7e47cf5ff915878f4a0dc13
+          image: jculvey/fib-api:2018.12.2
           ports:
             - containerPort: 5000
           env:
