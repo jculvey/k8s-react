@@ -23,6 +23,7 @@ const readyDB = async () => {
   await pgClient
     .query(`CREATE TABLE IF NOT EXISTS values(NUMBER INT)`)
     .catch(err => console.log(err));
+  dbInitialized = true;
 };
 
 // redis client setup

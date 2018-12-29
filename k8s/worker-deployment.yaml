@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: jculvey/fib-worker:2018.12.3
+          image: jculvey/fib-worker:2018.12.4
           env:
             - name: REDIS_HOST
               value: redis-cluster-ip
